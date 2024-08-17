@@ -39,7 +39,6 @@ const AddWidgetModal = ({ isOpen, onRequestClose, onConfirm }) => {
             className="mt-1 p-2 border rounded w-full"
           />
         </div>
-        
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Chart Labels (comma separated)

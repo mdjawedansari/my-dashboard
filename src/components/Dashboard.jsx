@@ -11,7 +11,7 @@ import { IoMdClose } from 'react-icons/io';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
-  const data = useSelector((state) => state.dashboard);
+  const categories = useSelector((state) => state.dashboard.categories || []);
   const dispatch = useDispatch();
 
   const [isWidgetModalOpen, setIsWidgetModalOpen] = useState(false);
@@ -51,7 +51,7 @@ const Dashboard = () => {
   };
 
   const handleRemoveCategory = (categoryId) => {
-    dispatch(removeCategory({ categoryId }));
+    dispatch(removeCategory(categoryId));
   };
 
   const handleRemoveWidget = (categoryId, widgetId) => {
@@ -62,9 +62,8 @@ const Dashboard = () => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredCategories = data.categories.map((category) => {
-    const widgets = category.widgets || [];
-    const filteredWidgets = widgets.filter(
+  const filteredCategories = categories.map((category) => {
+    const filteredWidgets = (category.widgets || []).filter(
       (widget) =>
         widget.name &&
         widget.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -73,9 +72,9 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="p-4 bg-[#F2F2F2] py-[36px] px-[45px]">
-      <div className="flex justify-between  ">
-        <h1 className="text-lg md:text-2xl text-green-600 font-bold cursor-pointer">
+    <div className="p-4 bg-[#F2F2F2] py-[36px] px-[45px] w-full">
+      <div className="flex justify-between -ml-9">
+        <h1 className="text-lg md:text-2xl mr-4  text-green-600 font-bold cursor-pointer">
           CNAPP Dashboard
         </h1>
         <input
@@ -83,12 +82,9 @@ const Dashboard = () => {
           placeholder="Search Widgets..."
           value={searchTerm}
           onChange={handleSearch}
-          className="mb-4 p-2 border-[#CCCCCC] rounded-lg  w-[350px] focus:outline-[#F2F2F2] border-[1px]"
+          className="mb-4 p-2 border-[#CCCCCC]  rounded-lg w-[350px]  focus:outline-[#F2F2F2] border-[1px]"
         />
-        <span className=''>
-
-        <CgProfile className="text-5xl text-green-600 cursor-pointer" />
-        </span>
+        <span><CgProfile className="text-4xl ml-4 text-green-600 cursor-pointer" /></span>
       </div>
 
       <div className='flex justify-end'>

@@ -6,12 +6,15 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
   if (!isOpen) return null;
 
   const handleConfirm = () => {
-    const newCategory = {
-      id: Date.now().toString(),
-      name: categoryName,
-      widgets: [],
-    };
-    onConfirm(newCategory);
+    if (categoryName) {
+      const newCategory = {
+        id: Date.now().toString(),
+        name: categoryName,
+        widgets: []
+      };
+
+      onConfirm(newCategory);
+    }
   };
 
   return (
