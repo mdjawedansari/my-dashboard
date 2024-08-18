@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getStoredData, setStoredData } from './utils/localStorage';
 
-// Initialize the state from local storage or use a default value
 const initialState = {
-  categories: getStoredData()?.categories || [], // Ensure categories is always an array
+  categories: getStoredData()?.categories || [],
 };
 
 const dashboardSlice = createSlice({
@@ -17,32 +16,30 @@ const dashboardSlice = createSlice({
         if (!category.widgets) {
           category.widgets = [];
         }
-        category.widgets.push(widget); // Safe operation
-        setStoredData(state); // Update local storage
+        // Check if widget is already added to prevent duplicates
+        if (!category.widgets.find(w => w.id === widget.id)) {
+          category.widgets.push(widget);
+          setStoredData(state); // Update local storage
+        }
       }
     },
     removeWidget: (state, action) => {
       const { categoryId, widgetId } = action.payload;
       const category = state.categories.find(cat => cat.id === categoryId);
       if (category) {
-        category.widgets = (category.widgets || []).filter(widget => widget.id !== widgetId); // Safe operation
+        category.widgets = (category.widgets || []).filter(widget => widget.id !== widgetId);
         setStoredData(state); // Update local storage
       }
     },
     addCategory: (state, action) => {
-      // Ensure state.categories is an array
-      if (!Array.isArray(state.categories)) {
-        state.categories = [];
+      // Prevent adding duplicate categories
+      if (!state.categories.find(cat => cat.id === action.payload.id)) {
+        state.categories.push(action.payload);
+        setStoredData(state); // Update local storage
       }
-      state.categories.push(action.payload); // Safe operation
-      setStoredData(state); // Update local storage
     },
     removeCategory: (state, action) => {
-      // Ensure state.categories is an array
-      if (!Array.isArray(state.categories)) {
-        state.categories = [];
-      }
-      state.categories = state.categories.filter(category => category.id !== action.payload); // Safe operation
+      state.categories = state.categories.filter(category => category.id !== action.payload);
       setStoredData(state); // Update local storage
     },
   },
