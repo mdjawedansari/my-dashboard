@@ -73,8 +73,8 @@ const Dashboard = () => {
 
   return (
     <div className="p-4 bg-[#F2F2F2] py-[36px] px-[45px] w-full">
-      <div className="flex justify-between -ml-9">
-        <h1 className="text-lg md:text-2xl mr-4  text-green-600 font-bold cursor-pointer">
+      <div className="flex justify-between -ml-9 sm:-ml-0">
+        <h1 className="text-lg md:text-2xl mr-4 sm:mr-0  text-green-600 font-bold cursor-pointer">
           CNAPP Dashboard
         </h1>
         <input
@@ -84,7 +84,7 @@ const Dashboard = () => {
           onChange={handleSearch}
           className="mb-4 p-2 border-[#CCCCCC]  rounded-lg w-[350px]  focus:outline-[#F2F2F2] border-[1px]"
         />
-        <span><CgProfile className="text-4xl ml-4 text-green-600 cursor-pointer" /></span>
+        <span><CgProfile className="text-4xl ml-4 sm:ml-0 text-green-600 cursor-pointer" /></span>
       </div>
 
       <div className='flex justify-end'>
