@@ -6,11 +6,17 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   useEffect(() => {
-    // Fetch data from localStorage
-    const storedData = localStorage.getItem('dashboardData');
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      setCategories(parsedData.categories || []);
+    if (isOpen) {
+      // Fetch data from localStorage
+      const storedData = localStorage.getItem('dashboardData');
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        setCategories(parsedData.categories || []);
+        // Set the first category as the default selected category
+        if (parsedData.categories && parsedData.categories.length > 0) {
+          setSelectedCategoryId(parsedData.categories[0].id);
+        }
+      }
     }
   }, [isOpen]); // Re-fetch data whenever the modal is opened
 
@@ -35,20 +41,19 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
     setCategoryName('');
   };
 
-  if (!isOpen) return null; // Ensure the modal doesn't render when isOpen is false
-
   const handleCategoryClick = (id) => {
     setSelectedCategoryId(id);
   };
 
   const selectedCategory = categories.find(category => category.id === selectedCategoryId);
 
+  if (!isOpen) return null; // Ensure the modal doesn't render when isOpen is false
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-2/5">
-        
-
-        <div>
+        {/* Existing Categories Section */}
+        <div className="mb-4">
           <h2 className="text-xl text-green-600 font-bold mb-4">Existing Categories</h2>
           <div className="flex flex-wrap gap-2 mb-4">
             {categories.map((category) => (
@@ -61,10 +66,9 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
               </button>
             ))}
           </div>
-          
-          {selectedCategory && (
-            <div>
-              {/* <h2 className="text-xl text-green-600 font-bold mb-4">Widgets in {selectedCategory.name}</h2> */}
+          {/* Widgets Section */}
+          <div>
+            {selectedCategory ? (
               <div>
                 {selectedCategory.widgets.length > 0 ? (
                   selectedCategory.widgets.map((widget) => (
@@ -76,9 +80,13 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
                   <p>No widgets available for this category.</p>
                 )}
               </div>
-            </div>
-          )}
+            ) : (
+              <p>Select a category to view widgets.</p>
+            )}
+          </div>
         </div>
+
+        {/* Add New Category Section */}
         <h2 className="text-xl text-green-600 font-bold mb-4">Add New Category</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
