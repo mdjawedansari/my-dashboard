@@ -103,65 +103,73 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {filteredCategories.map((category) => (
-        <div key={category.id} className="mb-6 mt-8 relative bg-[#CCCCCC] p-4 rounded-lg">
-          <button
-            onClick={() => handleRemoveCategory(category.id)}
-            className="absolute top-2 right-2 text-red-500"
-          >
-            <IoMdClose className="text-xl" />
-          </button>
-          <h2 className="text-xl font-bold mb-4">{category.name}</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {(category.widgets || []).map((widget) => (
-              <div
-                key={widget.id}
-                className="p-4 pl-14 bg-white rounded-lg shadow-lg relative"
-              >
-                <button
-                  onClick={() => handleRemoveWidget(category.id, widget.id)}
-                  className="absolute top-2 right-2 text-red-500"
-                >
-                  ✕
-                </button>
-                <h3 className="font-semibold text-lg mb-2">{widget.name}</h3>
+      {filteredCategories.length === 0 ? (
+        <p className="text-center text-gray-500">No categories available</p>
+      ) : (
+        filteredCategories.map((category) => (
+          <div key={category.id} className="mb-6 mt-8 relative bg-[#CCCCCC] p-4 rounded-lg">
+            <button
+              onClick={() => handleRemoveCategory(category.id)}
+              className="absolute top-2 right-2 text-red-500"
+            >
+              <IoMdClose className="text-xl" />
+            </button>
+            <h2 className="text-xl font-bold mb-4">{category.name}</h2>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {category.widgets.length === 0 ? (
+                <p className="text-center text-gray-500 w-full col-span-full">No widgets available</p>
+              ) : (
+                category.widgets.map((widget) => (
+                  <div
+                    key={widget.id}
+                    className="p-4 pl-14 bg-white rounded-lg shadow-lg relative"
+                  >
+                    <button
+                      onClick={() => handleRemoveWidget(category.id, widget.id)}
+                      className="absolute top-2 right-2 text-red-500"
+                    >
+                      ✕
+                    </button>
+                    <h3 className="font-semibold text-lg mb-2">{widget.name}</h3>
 
-                {widget.type === 'pie' && (
-                  <div className="w-1/2">
-                    <Pie
-                      data={{
-                        labels: widget.data.labels,
-                        datasets: [
-                          {
-                            data: widget.data.values,
-                            backgroundColor: ['#FF6384', '#36A2EB', '#D1D5DB'],
-                          },
-                        ],
-                      }}
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                          legend: {
-                            display: true,
-                            position: 'right',
-                          },
-                        },
-                      }}
-                    />
+                    {widget.type === 'pie' && (
+                      <div className="w-1/2">
+                        <Pie
+                          data={{
+                            labels: widget.data.labels,
+                            datasets: [
+                              {
+                                data: widget.data.values,
+                                backgroundColor: ['#FF6384', '#36A2EB', '#D1D5DB'],
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: {
+                                display: true,
+                                position: 'right',
+                              },
+                            },
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
+                ))
+              )}
+            </div>
+            <button
+              onClick={() => openWidgetModal(category.id)}
+              className="w-full mt-4 p-4 bg-gray-200 rounded-lg shadow-lg text-center flex items-center justify-center"
+            >
+              + Add Widget
+            </button>
           </div>
-          <button
-            onClick={() => openWidgetModal(category.id)}
-            className="w-full mt-4 p-4 bg-gray-200 rounded-lg shadow-lg text-center flex items-center justify-center"
-          >
-            + Add Widget
-          </button>
-        </div>
-      ))}
+        ))
+      )}
 
       <AddWidgetModal
         isOpen={isWidgetModalOpen}

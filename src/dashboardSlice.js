@@ -53,8 +53,10 @@ const dashboardSlice = createSlice({
       }
     },
     addCategory: (state, action) => {
-      if (!state.categories.find(cat => cat.id === action.payload.id)) {
-        state.categories.push(action.payload);
+      const newCategory = action.payload;
+      if (!state.categories.find(cat => cat.id === newCategory.id)) {
+        // Add the new category to the top
+        state.categories = [newCategory, ...state.categories];
         setStoredData(state); // Update local storage
       }
     },
