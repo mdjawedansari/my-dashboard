@@ -9,10 +9,13 @@ Currently, two official plugins are available:
 
 # My Dashboard
 
+**Dashboard**
 ![Screenshot](./src/assets/Screenshot%20(31).png)
 
+**Add Category Page**
 ![Screenshot](./src/assets/Screenshot%20(32).png)
 
+**Add Wodget Page**
 ![Screenshot](./src/assets/Screenshot%20(33).png)
 
 ## Description
