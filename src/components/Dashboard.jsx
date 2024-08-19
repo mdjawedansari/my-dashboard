@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addWidget, removeWidget, addCategory, removeCategory } from '../dashboardSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addWidget, addCategory, removeCategory, removeWidget } from '../dashboardSlice';
 import AddWidgetModal from './AddWidgetModal';
 import AddCategoryModal from './AddCategoryModal';
 import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { CgProfile } from 'react-icons/cg';
 import { IoMdClose } from 'react-icons/io';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend
+} from 'chart.js';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+// Register Chart.js components
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend
+);
 
 const Dashboard = () => {
-  const categories = useSelector((state) => state.dashboard.categories || []);
   const dispatch = useDispatch();
-
+  const categories = useSelector(state => state.dashboard.categories || []);
+  const [searchTerm, setSearchTerm] = useState('');
   const [isWidgetModalOpen, setIsWidgetModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [currentCategoryId, setCurrentCategoryId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
 
   const openWidgetModal = (categoryId) => {
     setCurrentCategoryId(categoryId);
@@ -66,7 +75,8 @@ const Dashboard = () => {
     const filteredWidgets = (category.widgets || []).filter(
       (widget) =>
         widget.name &&
-        widget.name.toLowerCase().includes(searchTerm.toLowerCase())
+        widget.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !widget.hidden // Only include widgets that are not hidden
     );
     return { ...category, widgets: filteredWidgets };
   });
@@ -74,7 +84,7 @@ const Dashboard = () => {
   return (
     <div className="p-4 bg-[#F2F2F2] py-[36px] px-[45px] w-full">
       <div className="flex justify-between -ml-9 sm:-ml-0">
-        <h1 className="text-lg md:text-2xl mr-4 sm:mr-0  text-green-600 font-bold cursor-pointer">
+        <h1 className="text-lg md:text-2xl mr-4 sm:mr-0 text-green-600 font-bold cursor-pointer">
           CNAPP Dashboard
         </h1>
         <input
@@ -82,12 +92,12 @@ const Dashboard = () => {
           placeholder="Search Widgets..."
           value={searchTerm}
           onChange={handleSearch}
-          className="mb-4 p-2 border-[#CCCCCC]  rounded-lg w-[350px]  focus:outline-[#F2F2F2] border-[1px]"
+          className="mb-4 p-2 border-[#CCCCCC] rounded-lg w-[350px] focus:outline-[#F2F2F2] border-[1px]"
         />
         <span><CgProfile className="text-4xl ml-4 sm:ml-0 text-green-600 cursor-pointer" /></span>
       </div>
 
-      <div className='flex justify-end'>
+      <div className="flex justify-end">
         <div className="mb-4 mt-4 p-2 pt-4 pb-4 bg-green-500 rounded-lg shadow-lg w-44 text-center">
           <button onClick={openCategoryModal}>+ Add Category</button>
         </div>
@@ -157,6 +167,7 @@ const Dashboard = () => {
         isOpen={isWidgetModalOpen}
         onRequestClose={closeWidgetModal}
         onConfirm={handleAddWidget}
+        categoryId={currentCategoryId}
       />
 
       <AddCategoryModal

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addWidget, removeWidget, addCategory } from '../dashboardSlice';
+import { addWidget, hideWidget, showWidget, addCategory } from '../dashboardSlice';
 
 const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
         setSelectedCategoryId(defaultCategoryId);
         const defaultWidgets = categories.find(cat => cat.id === defaultCategoryId)?.widgets || [];
         setWidgetStates(defaultWidgets.reduce((acc, widget) => {
-          acc[widget.id] = true;
+          acc[widget.id] = !widget.hidden; // Set initial checkbox state based on the widget's hidden state
           return acc;
         }, {}));
       }
@@ -29,7 +29,7 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
     if (category) {
       setWidgetStates(
         category.widgets.reduce((acc, widget) => {
-          acc[widget.id] = true;
+          acc[widget.id] = !widget.hidden; // Set checkbox state based on widget's hidden state
           return acc;
         }, {})
       );
@@ -41,13 +41,10 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
       const newStates = { ...prevStates, [widgetId]: !prevStates[widgetId] };
       const category = categories.find(cat => cat.id === selectedCategoryId);
       if (category) {
-        const widget = category.widgets.find(widget => widget.id === widgetId);
-        if (widget) {
-          if (newStates[widgetId]) {
-            dispatch(addWidget({ categoryId: selectedCategoryId, widget }));
-          } else {
-            dispatch(removeWidget({ categoryId: selectedCategoryId, widgetId }));
-          }
+        if (newStates[widgetId]) {
+          dispatch(showWidget({ categoryId: selectedCategoryId, widgetId }));
+        } else {
+          dispatch(hideWidget({ categoryId: selectedCategoryId, widgetId }));
         }
       }
       return newStates;
@@ -66,8 +63,8 @@ const AddCategoryModal = ({ isOpen, onRequestClose, onConfirm }) => {
     dispatch(addCategory(newCategory));
     onConfirm(newCategory);
     setCategoryName('');
-    setSelectedCategoryId(null); // Reset the selected category
-    setWidgetStates({}); // Clear widget states
+    setSelectedCategoryId(null);
+    setWidgetStates({});
   };
 
   if (!isOpen) return null;

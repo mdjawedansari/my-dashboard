@@ -16,9 +16,8 @@ const dashboardSlice = createSlice({
         if (!category.widgets) {
           category.widgets = [];
         }
-        // Check if widget is already added to prevent duplicates
         if (!category.widgets.find(w => w.id === widget.id)) {
-          category.widgets.push(widget);
+          category.widgets.push({ ...widget, hidden: false }); // Set hidden to false by default
           setStoredData(state); // Update local storage
         }
       }
@@ -31,8 +30,29 @@ const dashboardSlice = createSlice({
         setStoredData(state); // Update local storage
       }
     },
+    hideWidget: (state, action) => {
+      const { categoryId, widgetId } = action.payload;
+      const category = state.categories.find(cat => cat.id === categoryId);
+      if (category) {
+        const widget = category.widgets.find(widget => widget.id === widgetId);
+        if (widget) {
+          widget.hidden = true;
+          setStoredData(state); // Update local storage
+        }
+      }
+    },
+    showWidget: (state, action) => {
+      const { categoryId, widgetId } = action.payload;
+      const category = state.categories.find(cat => cat.id === categoryId);
+      if (category) {
+        const widget = category.widgets.find(widget => widget.id === widgetId);
+        if (widget) {
+          widget.hidden = false;
+          setStoredData(state); // Update local storage
+        }
+      }
+    },
     addCategory: (state, action) => {
-      // Prevent adding duplicate categories
       if (!state.categories.find(cat => cat.id === action.payload.id)) {
         state.categories.push(action.payload);
         setStoredData(state); // Update local storage
@@ -45,5 +65,5 @@ const dashboardSlice = createSlice({
   },
 });
 
-export const { addWidget, removeWidget, addCategory, removeCategory } = dashboardSlice.actions;
+export const { addWidget, removeWidget, hideWidget, showWidget, addCategory, removeCategory } = dashboardSlice.actions;
 export default dashboardSlice.reducer;
