@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const AddWidgetModal = ({ isOpen, onRequestClose, onConfirm }) => {
-  const [widgetName, setWidgetName] = useState('');
-  const [chartLabels, setChartLabels] = useState('');
-  const [chartValues, setChartValues] = useState('');
+  const [widgetName, setWidgetName] = useState("");
+  const [chartLabels, setChartLabels] = useState("");
+  const [chartValues, setChartValues] = useState("");
 
   if (!isOpen) return null;
 
   const handleConfirm = () => {
-    const labelsArray = chartLabels.split(',').map(label => label.trim());
-    const valuesArray = chartValues.split(',').map(value => parseFloat(value.trim()));
+    const labelsArray = chartLabels.split(",").map((label) => label.trim());
+    const valuesArray = chartValues
+      .split(",")
+      .map((value) => parseFloat(value.trim()));
 
     const newWidget = {
       id: Date.now().toString(),
       name: widgetName,
-      type: 'pie',
+      type: "pie",
       data: {
         labels: labelsArray,
         values: valuesArray,

@@ -1,29 +1,25 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addWidget, addCategory, removeCategory, removeWidget } from '../dashboardSlice';
-import AddWidgetModal from './AddWidgetModal';
-import AddCategoryModal from './AddCategoryModal';
-import { Pie } from 'react-chartjs-2';
-import { CgProfile } from 'react-icons/cg';
-import { IoMdClose } from 'react-icons/io';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend
-} from 'chart.js';
+  addWidget,
+  addCategory,
+  removeCategory,
+  removeWidget,
+} from "../dashboardSlice";
+import AddWidgetModal from "./AddWidgetModal";
+import AddCategoryModal from "./AddCategoryModal";
+import { Pie } from "react-chartjs-2";
+import { CgProfile } from "react-icons/cg";
+import { IoMdClose } from "react-icons/io";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 // Register Chart.js components
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const categories = useSelector(state => state.dashboard.categories || []);
-  const [searchTerm, setSearchTerm] = useState('');
+  const categories = useSelector((state) => state.dashboard.categories || []);
+  const [searchTerm, setSearchTerm] = useState("");
   const [isWidgetModalOpen, setIsWidgetModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [currentCategoryId, setCurrentCategoryId] = useState(null);
@@ -50,7 +46,7 @@ const Dashboard = () => {
       dispatch(addWidget({ categoryId: currentCategoryId, widget: newWidget }));
       closeWidgetModal();
     } else {
-      console.error('No category ID selected');
+      console.error("No category ID selected");
     }
   };
 
@@ -94,7 +90,9 @@ const Dashboard = () => {
           onChange={handleSearch}
           className="mb-4 p-2 border-[#CCCCCC] rounded-lg w-[350px] focus:outline-[#F2F2F2] border-[1px]"
         />
-        <span><CgProfile className="text-4xl ml-4 sm:ml-0 text-green-600 cursor-pointer" /></span>
+        <span>
+          <CgProfile className="text-4xl ml-4 sm:ml-0 text-green-600 cursor-pointer" />
+        </span>
       </div>
 
       <div className="flex justify-end">
@@ -107,7 +105,10 @@ const Dashboard = () => {
         <p className="text-center text-gray-500">No categories available</p>
       ) : (
         filteredCategories.map((category) => (
-          <div key={category.id} className="mb-6 mt-8 relative bg-[#CCCCCC] p-4 rounded-lg">
+          <div
+            key={category.id}
+            className="mb-6 mt-8 relative bg-[#CCCCCC] p-4 rounded-lg"
+          >
             <button
               onClick={() => handleRemoveCategory(category.id)}
               className="absolute top-2 right-2 text-red-500"
@@ -117,7 +118,9 @@ const Dashboard = () => {
             <h2 className="text-xl font-bold mb-4">{category.name}</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
               {category.widgets.length === 0 ? (
-                <p className="text-center text-gray-500 w-full col-span-full">No widgets available</p>
+                <p className="text-center text-gray-500 w-full col-span-full">
+                  No widgets available
+                </p>
               ) : (
                 category.widgets.map((widget) => (
                   <div
@@ -130,9 +133,11 @@ const Dashboard = () => {
                     >
                       ✕
                     </button>
-                    <h3 className="font-semibold text-lg mb-2">{widget.name}</h3>
+                    <h3 className="font-semibold text-lg mb-2">
+                      {widget.name}
+                    </h3>
 
-                    {widget.type === 'pie' && (
+                    {widget.type === "pie" && (
                       <div className="w-1/2">
                         <Pie
                           data={{
@@ -140,7 +145,11 @@ const Dashboard = () => {
                             datasets: [
                               {
                                 data: widget.data.values,
-                                backgroundColor: ['#FF6384', '#36A2EB', '#D1D5DB'],
+                                backgroundColor: [
+                                  "#FF6384",
+                                  "#36A2EB",
+                                  "#D1D5DB",
+                                ],
                               },
                             ],
                           }}
@@ -150,7 +159,7 @@ const Dashboard = () => {
                             plugins: {
                               legend: {
                                 display: true,
-                                position: 'right',
+                                position: "right",
                               },
                             },
                           }}

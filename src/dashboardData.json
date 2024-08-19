@@ -1,20 +1,19 @@
 {
-    "categories": [
-      {
-        "id": "cspm",
-        "name": "CSPM Executive Dashboard",
-        "widgets": []
-      },
-      {
-        "id": "cwpp",
-        "name": "CWPP Dashboard",
-        "widgets": []
-      },
-      {
-        "id": "registryScan",
-        "name": "Registry Scan",
-        "widgets": []
-      }
-    ]
-  }
-  
+  "categories": [
+    {
+      "id": "cspm",
+      "name": "CSPM Executive Dashboard",
+      "widgets": []
+    },
+    {
+      "id": "cwpp",
+      "name": "CWPP Dashboard",
+      "widgets": []
+    },
+    {
+      "id": "registryScan",
+      "name": "Registry Scan",
+      "widgets": []
+    }
+  ]
+}

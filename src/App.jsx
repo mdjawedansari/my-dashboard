@@ -1,13 +1,12 @@
-import './App.css'
-import Dashboard from './components/Dashboard'
+import "./App.css";
+import Dashboard from "./components/Dashboard";
 
 function App() {
-
   return (
     <>
       <Dashboard />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
