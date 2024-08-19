@@ -9,6 +9,8 @@ Currently, two official plugins are available:
 
 # My Dashboard
 
+![Screenshot](./src/assets/Screenshot%20(31).png)
+
 ## Description
 
 My Dashboard is a modern, interactive dashboard application built with React, Redux, and various other libraries. It allows users to manage categories and widgets dynamically, including adding, removing, and customizing them. The dashboard uses Chart.js for data visualization and features a clean and responsive UI using Material-UI and Tailwind CSS.
